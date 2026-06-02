@@ -1,0 +1,77 @@
+body {
+    background-color: #CCE2CB;
+     font-family: Arial, sans-serif;
+}
+.navbar {
+    color: white;
+    text-decoration: none;
+    padding: 0;
+    height: 75px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.navbar:hover {
+    background-color: rgba(156, 216, 139, 1);
+}
+.navbar li {
+    align-items: center;
+    margin: 27px auto;
+}
+
+.navbar li a:hover {
+    background-color: rgba(120, 180, 110, 0.9);
+}
+.navbar ul{
+    list-style-type: none;
+    background-color: rgba(156, 216, 139, 0.85);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.favorites-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1rem;
+}
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    overflow: hidden;
+    flex: 1 1 calc(33.333% - 2rem);
+    max-width: calc(33.333% - 2rem);
+}
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.card-content {
+    padding: 1rem;
+}
+.card-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+.card-link {
+    text-decoration: none;
+    color: #3498db;
+    font-size: 1rem;
+}
+.card-link:hover {
+    color: #2980b9;
+}

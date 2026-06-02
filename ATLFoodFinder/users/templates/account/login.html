@@ -1,0 +1,123 @@
+{% extends "layouts/base.html" %}
+
+{% load static %}
+{% load socialaccount %}
+{% block head_title %}
+    Custom Login Page
+{% endblock head_title %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light blue background */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .custom-login {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            height: 250px;
+            width: 450px;
+            /* Move the custom-login div to the left */
+            transform: translateX(-100px); /* Adjust the value to control how much to move */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4CAF50; /* Green color */
+        }
+
+        .login-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #45a049;
+        }
+
+        .signup-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196F3; /* Blue background */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .signup-btn:hover {
+            background-color: #1976d2;
+        }
+
+        .divider {
+            margin: 20px 0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .google-login {
+            margin-top: 20px;
+        }
+
+        .google-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #DB4437; /* Google red */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background-color: #c23321;
+        }
+    </style>
+
+    <div class="custom-login">
+        <h1>Welcome! Please sign in</h1>
+
+        <!-- Sign In Button -->
+        <a href="{% url 'account_login' %}" class="login-btn">Sign In</a>
+
+        <!-- Sign Up Button -->
+        <a href="{% url 'account_signup' %}" class="signup-btn">Sign Up</a>
+
+        <!-- Divider -->
+        <div class="divider">OR</div>
+
+        <!-- Google Login Button -->
+        {% if SOCIALACCOUNT_ENABLED %}
+            <div class="google-login">
+                <a href="{% provider_login_url 'google' %}?next=/" class="google-btn">Login with Google</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+
+    <!-- Check if the query is "American" and display the American restaurant info -->
+    {% if show_american_info %}
+        <div class="container">
+            <div class="restaurant-name">Restaurant Name: Panera Bread</div>
+            <div class="rating">Rating: ★★★☆☆ (3 stars)</div>
+            <div class="cuisine">Cuisine: American</div>
+        </div>
+    {% endif %}
+
+    <!-- Check if the query is "Chinese" and display the Chinese restaurant info -->
+    {% if show_chinese_info %}
+        <div class="container">
+            <div class="restaurant-name">Restaurant Name: P.F. Chang's</div>
+            <div class="rating">Rating: ★★★★☆ (4 stars)</div>
+            <div class="cuisine">Cuisine: Chinese</div>
+        </div>
+    {% endif %}
+
+    <!-- Display search results for other queries -->
+    {% if not show_american_info and not show_chinese_info %}
+        {% if results %}
+            <ul>
+                {% for result in results %}
+                    <li>{{ result.name }} - {{ result.description }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

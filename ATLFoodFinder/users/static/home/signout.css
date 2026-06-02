@@ -1,0 +1,31 @@
+.signout-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.signout-container h1 {
+    color: #333;
+}
+
+.signout-container p {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.signout-container button {
+    padding: 10px 20px;
+    background-color: #d9534f; /* Bootstrap danger color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signout-container button:hover {
+    background-color: #c9302c; /* Darker red on hover */
+}

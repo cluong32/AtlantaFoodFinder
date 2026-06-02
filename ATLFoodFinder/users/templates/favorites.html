@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'favorites/favoritesStyle.css' %}">
+        <title>Document</title>
+        
+   </head>
+    <body>
+        <nav class="navbar">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="/map/">Map</a></li>
+                <li><a href="/accounts/profile/">Profile</a></li>
+                <li><a href="/accounts/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <header>
+            <h1>Your Favorite Restaurants</h1>
+        
+        </header>
+        <div class="favorites-container">
+            {% for restaurant in favorite_restaurants %}
+            <div class="card">
+                <img src="{{ restaurant.image_url }}" alt="{{ restaurant.name }}">
+                <div class="card-content">
+                    <h3 class="card-title">{{ restaurant.name }}</h3>
+                    <p>{{ restaurant.address }}</p>
+                    <a href="{{ restaurant.website }}" target="_blank" class="card-link">Visit Website</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+    </html>    
+

@@ -1,0 +1,36 @@
+body {
+    background-image: url(TableOfFood.jpg);
+}
+
+#title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#title {
+    text-align: center;
+    margin: 15px auto;
+    font-size: 85px;
+    color: white;
+}
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 150px auto;
+}
+
+.button {
+    border: 1px solid black;
+    color: black;
+    padding: 30px 50px;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 12px;
+    text-align: center;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+.button:hover {opacity: 1}

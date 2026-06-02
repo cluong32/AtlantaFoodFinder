@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Map with Restaurant Info</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS9c12JgGlxc1dUvc6VjDkYfU7ogzFuaQ&libraries=places"></script>
+  <script>
+    let map, service, autocomplete, searchLocation;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 33.749, lng: -84.387 }, // Center on Atlanta
+        zoom: 12
+      });
+
+      // Create a new PlacesService to allow text searches
+      service = new google.maps.places.PlacesService(map);
+
+      // Create an autocomplete object for city searches
+      autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('search-bar'),
+        { types: ['geocode'] } // Allow geocode type (cities, regions)
+      );
+
+      autocomplete.setFields(['geometry']);
+      autocomplete.addListener('place_changed', onPlaceChanged);
+
+      // Center the map based on user's location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            map.setCenter(userLocation);
+            new google.maps.Marker({
+              position: userLocation,
+              map: map,
+              title: 'You are here'
+            });
+          },
+          function() {
+            handleLocationError(true, map.getCenter());
+          }
+        );
+      } else {
+        handleLocationError(false, map.getCenter());
+      }
+
+      loadFavorites(); // Load favorite restaurants on init
+    }
+
+    // When the user selects a place (city or location)
+    function onPlaceChanged() {
+      const place = autocomplete.getPlace();
+
+      if (!place.geometry) {
+        console.log('No details available for input.');
+        return;
+      }
+
+      // Save the selected location
+      searchLocation = place.geometry.location;
+
+      // Center the map on the searched city/location
+      map.setCenter(place.geometry.location);
+      map.setZoom(12);
+    }
+
+    // Trigger the restaurant search when the search button is clicked
+    function searchRestaurants() {
+      if (!searchLocation) {
+        alert("Please enter a city or location first.");
+        return;
+      }
+
+      // Get user filter inputs
+      const minRating = parseFloat(document.getElementById('rating').value);
+      const selectedCuisine = document.getElementById('cuisine').value;
+      const distanceInMiles = parseInt(document.getElementById('distance').value); // Distance in miles
+
+      // Convert miles to meters (1 mile = 1609.34 meters)
+      const distanceInMeters = distanceInMiles * 1609.34;
+
+      // Set up a search query for the PlacesService
+      const request = {
+        location: searchLocation,
+        radius: distanceInMeters, // Distance from the location in meters
+        type: ['restaurant'], // Type of places to search
+        keyword: selectedCuisine // Search by cuisine
+      };
+
+      // Execute the search query
+      service.nearbySearch(request, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          clearMarkers();
+          results.forEach(function(place) {
+            if (place.rating >= minRating) {
+              createMarker(place);
+            }
+          });
+        }
+      });
+    }
+
+    // Clear existing markers on the map
+    function clearMarkers() {
+      if (map.markers) {
+        map.markers.forEach(marker => marker.setMap(null));
+      }
+      map.markers = [];
+    }
+
+    // Create a marker for each place
+    function createMarker(place) {
+      const marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location,
+        title: place.name
+      });
+
+      // Add marker to map's markers list
+      if (!map.markers) {
+        map.markers = [];
+      }
+      map.markers.push(marker);
+
+      // Create infoWindow for the marker
+      const infoWindow = new google.maps.InfoWindow({
+        content: `
+          <div>
+            <h3>${place.name}</h3>
+            <p><strong>Rating:</strong> ${place.rating ? place.rating + ' ⭐️' : 'N/A'}</p>
+            <p><strong>Cuisine:</strong> ${place.selectedCuisine || place.userCuisine || 'N/A'}</p>
+            <p><strong>Address:</strong> ${place.vicinity || 'N/A'}</p>
+            <p><a href="${place.website || '#'}" target="_blank">Website</a></p>
+            <button onclick="addFavorite('${place.name}', '${place.vicinity}', '${place.rating}', '${place.geometry.location.lat()}', '${place.geometry.location.lng()}')">Favorite</button>
+            <div style="display: flex; justify-content: space-between; margin-top: auto;">
+              <a href="/see_reviews/${place.place_id}/" target="_blank">See Reviews</a>
+              <a href="/leave_review/${place.place_id}/" target="_blank">Leave a Review</a>
+            </div>
+          </div>`
+      });
+
+      marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+      });
+    }
+
+    // Add a restaurant to favorites and store it in localStorage
+    function addFavorite(name, address, rating, lat, lng) {
+      const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      favorites.push({ name, address, rating, lat, lng });
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      alert(`${name} has been added to your favorites!`);
+      displayFavorites();
+    }
+
+    // Display favorite restaurants
+    function displayFavorites() {
+      const favoriteList = document.getElementById('favorites-list');
+      favoriteList.innerHTML = ''; // Clear current list
+      const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      favorites.forEach((restaurant, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>${restaurant.name}</strong> - ${restaurant.address} (Rating: ${restaurant.rating || 'N/A'})
+          <button onclick="removeFavorite(${index})">Remove</button>
+        `;
+        favoriteList.appendChild(li);
+      });
+    }
+
+    // Remove a restaurant from favorites
+    function removeFavorite(index) {
+      const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      favorites.splice(index, 1);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      displayFavorites();
+    }
+
+    // Load favorite restaurants on page load
+    function loadFavorites() {
+      displayFavorites();
+    }
+
+    function handleLocationError(browserHasGeolocation, pos) {
+      const infoWindow = new google.maps.InfoWindow({
+        content: browserHasGeolocation ?
+                 'Error: The Geolocation service failed.' :
+                 'Error: Your browser doesn\'t support geolocation.',
+        position: pos
+      });
+      infoWindow.open(map);
+    }
+  </script>
+</head>
+<body onload="initMap()">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  </style>
+  <h3>Search for a Restaurant</h3>
+
+  <label for="rating">Minimum Rating:</label>
+  <select id="rating">
+    <option value="0">All</option>
+    <option value="1">1 Star</option>
+    <option value="2">2 Stars</option>
+    <option value="3">3 Stars</option>
+    <option value="4">4 Stars</option>
+    <option value="5">5 Stars</option>
+  </select>
+
+  <label for="cuisine">Cuisine Type:</label>
+  <select id="cuisine">
+    <option value="">All</option>
+    <option value="italian">Italian</option>
+    <option value="chinese">Chinese</option>
+    <option value="mexican">Mexican</option>
+    <option value="japanese">Japanese</option>
+    <option value="indian">Indian</option>
+    <!-- Add more cuisines as needed -->
+  </select>
+
+  <label for="distance">Distance (in miles):</label>
+  <select id="distance">
+    <option value="1">1 mile</option>
+    <option value="5">5 miles</option>
+    <option value="10">10 miles</option>
+    <option value="20">20 miles</option>
+  </select>
+
+  <!-- Search bar for entering a city -->
+  <input id="search-bar" type="text" placeholder="Search for a city...">
+
+  <!-- Search button to trigger the restaurant search -->
+  <button onclick="searchRestaurants()">Search</button>
+
+  <!-- Favorite restaurants section -->
+  <style>
+       .box {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        width: 80%;
+        margin: 20px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Styling for the box around the favorite restaurants */
+      .favorites-box {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        width: 80%;
+        margin: 20px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Heading and list inside the favorites box */
+      .favorites-box h3 {
+        text-align: center;
+        font-size: 24px;
+        color: #333;
+      }
+
+      .favorites-box ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .favorites-box li {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+        font-size: 18px;
+      }
+    </style>
+  <div class="favorites-box">
+  <h3>Your Favorite Restaurants</h3>
+  <ul id="favorites-list"></ul>
+  </div>
+ <div class="box">
+  <div id="map" style="height: 500px; width: 100%;"></div>
+      </div>
+</body>
+</html>

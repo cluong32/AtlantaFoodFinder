@@ -1,0 +1,87 @@
+ <!-- Load the static tag to reference static files -->
+ {% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link href="https://fonts.googleapis.com/css2?family=SUSE&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'profile/css/style.css' %}">
+        <title>Document</title>
+        
+   </head>
+    <body>
+        <header class="header-main">
+       
+                <div class="header-main-logo">
+           
+          
+       
+                <nav class="header-main-nav">
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/accounts/logout">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+          <div class="welcome-section">
+                <div class="welcome-text" style="font-family: 'SUSE', sans-serif; color: rgb(0, 0, 0); font-size: 30px; font-weight: bold; position: absolute; top: 3%; left: 42%;">ATLFoodFinder</div>
+             </div>
+        <div class="box"></div>
+        
+        <div class="user-img">
+            <img src="{{ google_profile_image }}" alt="Google Profile Image" class="profile-image">
+        </div>
+        <div class="google-name-box">
+            <p id="google-name">{{ user.first_name }} {{user.last_name}}</p> <!-- Displays the user's Google name -->
+        </div>
+    </div>
+        <script src="index.js"></script>
+            <div></div>
+        </header>
+        <div class="wrapper">
+            <div class="container">
+                
+                <div class="title-section">
+                </div>
+                <form action="" class="from">
+                    <div class="input-group">
+                       <p type="name" >Welcome to your profile, {{user.first_name}} {{user.last_name}}!</p>
+                    </div>
+                    <div class="input-group">
+                        <p class="para">Your Email is {{user.email}}</p>
+                        <p class="para">Want us to send you recommendations?</p>
+                        <input type="radio" id="Vegetarian" name="Preferences" value="Vegetarian">
+                        <label for="Vegetarian">YES</label>
+                        <input type="radio" id="Vegetarian" name="Preferences" value="Vegetarian">
+                        <label for="Vegetarian">NO</label>
+                    </div>
+                    <div class="input-group">
+                        <label for="" class="label-title">Enter your phone number:</label>
+                        <input type="phone number" name="phone number" placeholder="Phone Number">
+                  
+                    </div>
+                    <div class="input-group">
+                        <button class="submit-btn" type="submit">Submit</button>
+                    </div>
+                    <div class="input-group">
+                        <p class="para">Preferences:</p>
+                       <input type="checkbox" id="Vegan" name="Prefrences" value="Vegan">
+                     <label for="Vegan">Vegan</label>
+                    <input type="checkbox" id="Vegetarian" name="Prefrences" value="Vegetarian">
+                    <label for="Vegetarian">Vegetarian</label>
+                    <input type="checkbox" id="Halal" name="Prefrences" value="Halal">
+                    <label for="Halal">Halal</label>
+                    </div>
+                    <div class="input-group">
+                        <button class="submit-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+<head>
+</body>
+
+</body>
+</html>

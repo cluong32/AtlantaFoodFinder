@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ restaurant.name }} - User Review</title>
+    <link rel="stylesheet" href="../../static/reviews/leave_review.css"> <!-- Direct link to the CSS file -->
+</head>
+<body>
+    <h1>{{ restaurant.name }} - User Review</h1>
+</body>
+    <div class = "review-container">
+        <form method="POST" action="{% url 'leave_review' restaurant.place_id %}">
+            {% csrf_token %}
+            <label for="review_text">Your Review:</label>
+            <textarea id="review_text" name="review_text" required></textarea>
+
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option value="" disabled selected>Select a rating</option>
+                <option value="1">1 ⭐️- Very Poor</option>
+                <option value="2">2 ⭐️- Poor</option>
+                <option value="3">3 ⭐️- Average</option>
+                <option value="4">4 ⭐️- Good</option>
+                <option value="5">5 ⭐️- Excellent</option>
+            </select>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Website</title>
+        <link rel="stylesheet" href="homeStyle.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-text">ATLFoodFinder</div>
+        </div>
+
+        <!-- Bottom Left Section -->
+        <div class="bottom-left">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" style="font-size: 18px; width: 65vh; height: 50px;" placeholder="Search...">
+            </div>
+
+            <!-- Filter Section -->
+            <form method="get" action="{% url 'home' %}">
+                <div class="filter-section">
+                    <label>Filter:</label>
+                    <div>
+                        <input type="checkbox" id="all" name="filter" value="all">
+                        <label for="all">All</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="category1" name="filter" value="category1">
+                        <label for="category1">Cuisine</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="category2" name="filter" value="category2">
+                        <label for="category2">Rating</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="category3" name="filter" value="category3">
+                        <label for="category3">Radius</label>
+                    </div>
+                    <button type="submit">Apply Filter</button>
+                </div>
+            </form>
+            
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <div id="map">
+                <h1>this section is for map</h1>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</body>
+</html>

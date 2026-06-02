@@ -1,0 +1,58 @@
+/* Basic resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Styling the custom login container */
+.custom-login {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+.custom-login h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* Google login button */
+.custom-login a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #db4437;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-login a:hover {
+    background-color: #c33d31;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .custom-login {
+        width: 90%;
+        padding: 20px;
+    }
+}

@@ -1,0 +1,93 @@
+{% extends "account/base_manage.html" %}
+{% load allauth i18n %}
+{% load static %}
+
+{% block head_title %}
+    {% trans "Account Management" %}
+{% endblock head_title %}
+
+{% block extra_head %}
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Menu Container */
+        .menu-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            margin-right: 30px; /* Adds some space from the right edge */
+        }
+
+        .menu-container h1 {
+            color: #6c757d;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        /* Menu Buttons */
+        .menu-btn {
+            display: block;
+            width: 100%; /* Make the button full width */
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #a8dadc; /* Light pastel blue */
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-btn:hover {
+            background-color: #457b9d;
+        }
+
+        .menu-btn.cancel {
+            background-color: #ff6b6b; /* Red for cancel */
+        }
+
+        .menu-btn.cancel:hover {
+            background-color: #e63946;
+        }
+
+        .menu-btn.sign-out {
+            background-color: #f6bd60; /* Pastel peach */
+            width: 106%;
+        }
+
+        .menu-btn.sign-out:hover {
+            background-color: #ed9d5e;
+        }
+    </style>
+{% endblock extra_head %}
+
+{% block content %}
+    <div class="menu-container">
+        <h1>{% trans "Sign Out" %}</h1>
+
+        <!-- Sign Out Button -->
+        <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="menu-btn sign-out">{% trans "Sign Out" %}</button>
+        </form>
+
+        <!-- Cancel Button (Uses JavaScript to go back to the previous page) -->
+        <a href="javascript:history.back()" class="menu-btn cancel">{% trans "Cancel" %}</a>
+    </div>
+{% endblock content %}
